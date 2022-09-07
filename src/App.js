@@ -13,6 +13,7 @@ export default function App() {
         <Routes>
           <Route path='/' element={<ProductsList/>} />
           <Route path='/products/new'element={<ProductsForm/>} />
+          <Route path='/products/:id/edit'element={<ProductsForm/>} />
         </Routes>
       </Container>
     </BrowserRouter>

@@ -9,8 +9,8 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 export default function ProductsForm() {
   const [product, setProduct] = useState({
@@ -20,31 +20,61 @@ export default function ProductsForm() {
     warehouse: false,
   });
 
+  const [editing, setEditing] = useState(false);
+
   const navigate = useNavigate();
+  const params = useParams();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    product.quantity = parseInt(product.quantity);
-    if (product.warehouse == 'true') {
-      product.warehouse = true;
-    }else {
-      product.warehouse = false;
+    if (editing) {
+      await fetch(`http://localhost:4000/products/${params.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(product)
+      })
+      navigate('/');
+    } else {
+      product.quantity = parseInt(product.quantity);
+      if (product.warehouse == 'true') {
+        product.warehouse = true;
+      } else {
+        product.warehouse = false;
+        await fetch('http://localhost:4000/products', {
+          method: 'POST',
+          body: JSON.stringify(product),
+          headers: { 'Content-Type': 'application/json' },
+        });
+        navigate('/');
+      }
+
     }
 
-    const res = await fetch('http://localhost:4000/products', {
-      method: 'POST',
-      body: JSON.stringify(product),
-      headers: {"Content-Type": "application/json"}
-    })
-
-    const data = await res.json();
-    navigate('/');
   };
 
   const handleChange = (e) => {
-    setProduct({...product, [e.target.name]: e.target.value});
+    setProduct({ ...product, [e.target.name]: e.target.value });
   };
+
+  const loadProducts = async (id) => {
+    const res = await fetch(`http://localhost:4000/products/${id}`);
+    const data = await res.json();
+    setProduct({
+      name: data.name,
+      quantity: data.quantity,
+      store: data.store,
+      warehouse: data.warehouse,
+    });
+    setEditing(true);
+  };
+  useEffect(() => {
+    if (params.id) {
+      loadProducts(params.id);
+    }
+  }, [params.id]);
   return (
     <Grid
       container
@@ -55,7 +85,7 @@ export default function ProductsForm() {
       <Grid item xs={3}>
         <Card sx={{ mt: 5 }} style={{ padding: '1em' }}>
           <Typography variant="h5" textAlign="center">
-            Crear un Producto
+            {editing ? "Editar Producto" : "Crear Producto"}
           </Typography>
           <CardContent>
             <form onSubmit={handleSubmit}>
@@ -65,6 +95,7 @@ export default function ProductsForm() {
                 sx={{ display: 'block', mt: 1 }}
                 fullWidth
                 name="name"
+                value={product.name}
                 onChange={handleChange}
               />
 
@@ -74,7 +105,8 @@ export default function ProductsForm() {
                 sx={{ display: 'block', margin: '0.8rem 0' }}
                 fullWidth
                 name="quantity"
-                type='number'
+                value={product.quantity}
+                type="number"
                 onChange={handleChange}
               />
 
@@ -89,6 +121,7 @@ export default function ProductsForm() {
                     id: 'uncontrolled-native',
                   }}
                   name="store"
+                  value={product.store}
                   onChange={handleChange}
                 >
                   <option value={'default'}>Eliga Tienda</option>
@@ -108,6 +141,7 @@ export default function ProductsForm() {
                     id: 'uncontrolled-native2',
                   }}
                   name="warehouse"
+                  value={product.warehouse}
                   onChange={handleChange}
                 >
                   <option value={'default'}>Estado</option>
@@ -122,7 +156,7 @@ export default function ProductsForm() {
                 type="submit"
                 sx={{ display: 'block', margin: '0.8rem 0' }}
               >
-                Crear
+                Guardar
               </Button>
             </form>
           </CardContent>
