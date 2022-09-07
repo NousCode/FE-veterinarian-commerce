@@ -9,7 +9,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export default function ProductsForm() {
@@ -92,8 +92,8 @@ export default function ProductsForm() {
                   onChange={handleChange}
                 >
                   <option value={'default'}>Eliga Tienda</option>
-                  <option value={'Store A'}>Tienda A</option>
-                  <option value={'Store B'}>Tienda B</option>
+                  <option value={'Tienda A'}>Tienda A</option>
+                  <option value={'Tienda B'}>Tienda B</option>
                 </NativeSelect>
               </FormControl>
 
