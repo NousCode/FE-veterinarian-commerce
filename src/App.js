@@ -1,14 +1,20 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import ProductsForm from './components/ProductsForm';
-import Stores from './components/Stores';
+import { Container } from '@mui/material';
+import Navbar from './components/Navbar';
+import ProductsList from './components/ProductsList';
+
 
 export default function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path='/' element={<Stores/>} />
-        <Route path='/products/new'element={<ProductsForm/>} />
-      </Routes>
+      <Navbar/>
+      <Container>
+        <Routes>
+          <Route path='/' element={<ProductsList/>} />
+          <Route path='/products/new'element={<ProductsForm/>} />
+        </Routes>
+      </Container>
     </BrowserRouter>
   )
 }
