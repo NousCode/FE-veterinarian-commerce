@@ -16,7 +16,7 @@ export default function Navbar() {
         <Container>
           <Toolbar>
             <Typography variant='h5' sx={{ flexGrow: 1 }}>
-              <Link to="/" style={{textDecoration:'none', color: '#eee'}}>ECommerce Veterinaria 🐮</Link>
+              <Link to="/" style={{textDecoration:'none', color: '#eee '}}>ECommerce Veterinaria 🐮</Link>
             </Typography>
             <Button
               variant="contained"
