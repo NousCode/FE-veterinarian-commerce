@@ -39,17 +39,17 @@ export default function ProductsForm() {
       navigate('/');
     } else {
       product.quantity = parseInt(product.quantity);
-      if (product.warehouse == 'true') {
+      if (product.warehouse === 'true') {
         product.warehouse = true;
       } else {
         product.warehouse = false;
-        await fetch('http://localhost:4000/products', {
-          method: 'POST',
-          body: JSON.stringify(product),
-          headers: { 'Content-Type': 'application/json' },
-        });
-        navigate('/');
       }
+      await fetch('http://localhost:4000/products', {
+        method: 'POST',
+        body: JSON.stringify(product),
+        headers: { 'Content-Type': 'application/json' },
+      });
+      navigate('/');
 
     }
 

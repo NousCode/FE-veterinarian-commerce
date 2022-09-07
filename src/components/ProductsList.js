@@ -23,9 +23,9 @@ export default function ProductsList() {
   const handleAlert = async(id) => {
     const response = await fetch(`http://localhost:4000/products/${id}`);
     const data = await response.json();
-    if (data.quantity > 0 && data.warehouse == true) {
+    if (data.quantity > 0 && data.warehouse === true) {
       alert('Gracias por comprar con nosotros. Su producto se demora 16min 📦️.');
-    }else if ((parseInt(data.quantity) == 0)&& data.warehouse == true) {
+    }else if ((parseInt(data.quantity) === 0)&& data.warehouse === true) {
       alert('Por ahora no tenemos el producto en la tienda, pero si tenemos en la bodega. Su producto se demora 1 hora 📦️.');
     }else {
       alert('No tenemos existencias de ese producto. Dentro de 15 días reabasteceremos existencias.');
